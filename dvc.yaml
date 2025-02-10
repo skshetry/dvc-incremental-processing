@@ -1,4 +1,7 @@
 stages:
+  prune:
+    cmd: python prune.py
+
   process:
     matrix:
       dataset: ${dataset_list}
@@ -7,18 +10,7 @@ stages:
     deps:
     - process.py
     outs:
-    - out-temp/${item.dataset}
-
-  collect:
-    desc: "Collect all the outputs of `process`, pruning stale items."
-    cmd: python collect.py
-    deps:
-    - collect.py
-    - out-temp
-    params:
-    - dataset_list
-    outs:
-    - out
+    - out/${item.dataset}
 
   downstream:
     cmd: python train.py
