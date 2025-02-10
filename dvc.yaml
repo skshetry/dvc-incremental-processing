@@ -1,0 +1,26 @@
+stages:
+  process:
+    matrix:
+      dataset: ${dataset_list}
+
+    cmd: python process.py ${item.dataset}
+    deps:
+    - process.py
+    outs:
+    - out-temp/${item.dataset}
+
+  collect:
+    desc: "Collect all the outputs of `process`, pruning stale items."
+    cmd: python collect.py
+    deps:
+    - collect.py
+    - out-temp
+    params:
+    - dataset_list
+    outs:
+    - out
+
+  downstream:
+    cmd: python train.py
+    deps:
+    - out

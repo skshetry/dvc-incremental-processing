@@ -1,0 +1,70 @@
+schema: '2.0'
+stages:
+  process@dataset1:
+    cmd: python process.py dataset1
+    deps:
+    - path: process.py
+      hash: md5
+      md5: 9e7580dad4fdaf7189169e8da4d015d3
+      size: 152
+    outs:
+    - path: out-temp/dataset1
+      hash: md5
+      md5: 9de96ebd8d30dd931f9b90d2615c4b9d
+      size: 8
+  process@dataset2:
+    cmd: python process.py dataset2
+    deps:
+    - path: process.py
+      hash: md5
+      md5: 9e7580dad4fdaf7189169e8da4d015d3
+      size: 152
+    outs:
+    - path: out-temp/dataset2
+      hash: md5
+      md5: 2311d454ad6f5792ce4305d182d2caf0
+      size: 8
+  process@dataset3:
+    cmd: python process.py dataset3
+    deps:
+    - path: process.py
+      hash: md5
+      md5: 9e7580dad4fdaf7189169e8da4d015d3
+      size: 152
+    outs:
+    - path: out-temp/dataset3
+      hash: md5
+      md5: 9b93ff1599ad9f606bb13953ceafaa12
+      size: 8
+  collect:
+    cmd: python collect.py
+    deps:
+    - path: collect.py
+      hash: md5
+      md5: 045c9e730b96a3734b090d4bf395efa3
+      size: 273
+    - path: out-temp
+      hash: md5
+      md5: 50895b8e9dc5c14f40ed378bafa33024.dir
+      size: 54
+      nfiles: 4
+    params:
+      params.yaml:
+        dataset_list:
+        - dataset1
+        - dataset2
+        - dataset3
+    outs:
+    - path: out
+      hash: md5
+      md5: b0ca4aeffeb7728844e0bcd2dcf9b19c.dir
+      size: 24
+      nfiles: 3
+  downstream:
+    cmd: python train.py
+    deps:
+    - path: out
+      hash: md5
+      md5: b0ca4aeffeb7728844e0bcd2dcf9b19c.dir
+      size: 24
+      nfiles: 3
